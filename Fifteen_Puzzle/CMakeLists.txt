@@ -49,11 +49,13 @@ if (WIN32)
 		appFifteen_Puzzle
 		WIN32
 		src/main.cpp
+		resources/resource.qrc
 	)
 elseif (UNIX)
 	qt_add_executable(
 		appFifteen_Puzzle
 		src/main.cpp
+		resources/resource.qrc
 	)
 endif()
 
@@ -62,6 +64,11 @@ qt_add_qml_module(appFifteen_Puzzle
     VERSION 1.0
     QML_FILES
 	resources/main.qml
+	resources/GamePage.qml
+	resources/AboutPage.qml
+	resources/Tile.qml
+	resources/TilesModel.qml
+	resources/DefaultText.qml
 )
 
 # Add the target includes for appFifteen_Puzzle
