@@ -1,6 +1,8 @@
 //Qt headers
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
+//User headers
+#include "../headers/gamepage.hpp"
 
 int main(int argc, char *argv[])
 {
@@ -9,6 +11,16 @@ int main(int argc, char *argv[])
 
 	//Init game engine
 	QQmlApplicationEngine engine;
+
+	//Init GamePage utility
+	GamePage model;
+
+	/*
+	This template function registers the C++ type in the QML system
+	with the name qmlName, in the library imported from uri having
+	the version number composed from versionMajor and versionMinor.
+	*/
+	qmlRegisterType<GamePage> ("BackEnd", 1, 0, "CPP_Tiles");
 
 	//Init address of the main.qml
 	const QUrl url(u"qrc:/Fifteen_Puzzle/resources/main.qml"_qs);
