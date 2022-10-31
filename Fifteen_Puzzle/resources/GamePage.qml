@@ -23,21 +23,24 @@ GridView {
 		width: gameGrid.cellWidth
 		height: gameGrid.cellHeight
 
-		// Don't show the #16-tile
+		// Don't show the #<last>-tile
 		visible: display !== gameGrid.model.hiddenPos ? true : false
 
         Tile {
 			initialText: display
 
-            anchors.fill: _oneTile
-            anchors.margins: 2
+			anchors.fill: _oneTile
+			anchors.margins: 2
 
-//			MouseArea: {
-//				anchors.fill: parent,
-//				onClicked: {
+			MouseArea {
+				anchors.fill: parent
+				acceptedButtons: Qt.LeftButton
+				onClicked: {
+					// We are passing tile by index to back end
+					gameGrid.model.move(index);
 
-//				}
-//			}
+				}
+			}
         }
     }
 }

@@ -1,15 +1,77 @@
-#include "gamepage.hpp"
+// C++ headers
 #include <algorithm>
 #include <random>
 #include <ranges>
+
+// Qt headers
+#include <QDebug>
+
+// User headers
+#include "gamepage.hpp"
+
+//TODO: send to class Controller
+namespace
+{
+	// Function aprooved that distance between cells is equal '1'
+	bool aproove(const size_t& pos1, const size_t& pos2)
+	{
+		if(std::abs(to_i(pos1)-to_i(pos2)) == 1) return true;
+		else return false;
+	}
+
+	bool movableCells(
+			const identificator& first_operand,
+			const identificator& second_operand
+	)
+	{
+		//{}: means initialize with '0', that will convert to 'false'
+		bool result {};
+
+		if (first_operand == second_operand) return false;
+
+		// dummy distance between tiles
+//		int distance {};
+
+		if (
+			// This cells in the same row
+			(first_operand.first == second_operand.first)
+			&&
+			// Distance between columns is '1'
+			aproove(first_operand.second, second_operand.second)
+			||
+			// This cells in the same column
+			(first_operand.second == second_operand.second)
+			&&
+			// Distance between rows is '1'
+			aproove(first_operand.first, second_operand.first)
+			)
+		{
+			result = true;
+		}
+		else result = false;
+
+		return result;
+	}
+}
 
 GamePage::GamePage(const size_t &parseWidth, QObject *parent)
 	: QAbstractListModel(parent),
 	  m_width(parseWidth),
 	  m_size(parseWidth*parseWidth)
 {
+	// Make sure that we are not dealing with game page with width: '0' or less
+	Q_ASSERT(parseWidth > 0);
+
+	// Prepare tiles
 	m_tiles.resize(m_size);
 	std::iota(m_tiles.begin(), m_tiles.end(), 1);
+	// Prepare win position
+	winner = m_tiles;
+	winner.erase(winner.end()-1);
+	winner.erase(winner.end()-2);
+	winner.erase(winner.end()-3);
+	winner.erase(winner.end()-4);
+	// Shuffle tiles
 	shuffle();
 }
 
@@ -25,9 +87,49 @@ size_t GamePage::size() const
 	return m_size;
 }
 
+// We could ignore move so return type is bool
+bool GamePage::move(const int& index)
+{
+	if(!validatePosition(static_cast<size_t>(index))) return false;
+
+	//
+	const identificator pressedTile {getTablePos(index)};
+
+	// TODO: ranges
+	auto hiddenTileIterator = std::find(m_tiles.begin(), m_tiles.end(), m_size);
+
+	// Make sure that we get hidden tile
+	Q_ASSERT(hiddenTileIterator != m_tiles.end());
+
+	identificator hiddenTile {
+		getTablePos(
+					std::distance(m_tiles.begin(), hiddenTileIterator)
+					)
+	};
+
+	// We can't swap hidden tile with tile on the diagonal or far from it
+	if (!movableCells(pressedTile, hiddenTile)) return false;
+
+	// Iterator to the pressed tile
+	auto pressedTileIterator = std::ranges::find(m_tiles, m_tiles.at(index));
+
+	// Swap data in the tiles by iterators
+	std::iter_swap(hiddenTileIterator, pressedTileIterator);
+
+	//This signal is emitted whenever the data in an existing item changes.
+	emit dataChanged(createIndex(0,0), createIndex(m_size,0));
+
+	// Check are we finish game
+	checkWin();
+
+	return true;
+}
+
 // Shuffle the tiles with Mersenne Twister random generator
 void GamePage::shuffle()
 {
+	qDebug() << "Invoked shuffle...";
+
 	//This can be improoved
 	static auto seed = std::chrono::system_clock::now().time_since_epoch().count();
 	static std::mt19937 generator(seed);
@@ -43,6 +145,17 @@ void GamePage::shuffle()
 	do {
 		std::shuffle(m_tiles.begin(), m_tiles.end(), generator);
 	} while(!validateShuffle());
+
+	//This signal is emitted whenever the data in an existing item changes.
+	emit dataChanged(createIndex(0,0), createIndex(m_size,0));
+
+	qDebug() << "shuffle() finished";
+
+	for(auto& item: m_tiles)
+	{
+		qDebug() << item.value;
+
+	}
 
 }
 
@@ -72,44 +185,63 @@ bool GamePage::validateShuffle() const
 		}
 	}
 
-	// We are starting with Tile numbered '1'
-	const size_t start_tile {1};
-	size_t indexer{};
+	// We need to traverse m_tiles
+	// to find 16-tile and add appropriate coefficient to the conversions count
+	// TODO: ranges
+	auto dummy = std::find(m_tiles.begin(), m_tiles.end(), m_size);
 
-	// Definitely using lambda for traversing container
-	auto checkSixteenTile = [&](const Tile& puzzle)
-	{
-		// We are looking for the empty space
-		// Tile with #16 will give true here
-		if(puzzle.value == m_size)
-		{
-			// Add to the conversions count the number of
-			// rows (plus one) that that empty space have to pass
-			// to get to the position: '0' - left up corner
-			inverionsCount += start_tile + indexer / m_width;
-
-			// We succesfully found 16-tile, let's come back
-			return true;
-		}
-
-		// Move to another index
-		indexer++;
-
-		// Still looking for the 16-tile
-		return false;
-	};
-
-	// We don't need this dummy itself, but we need to traverse m_tiles
-	// find 16-tile and add appropriate coefficient to the conversions count
-	auto dummy = std::ranges::find_if(m_tiles, checkSixteenTile);
+	size_t indexer {};
 
 	// If somehow we didn't receive 16-tile in the container
 	// we will return false
 	if (dummy == m_tiles.end()) return false;
+	else
+	{
+		// We are starting with Tile numbered '1'
+		const size_t start_tile {1};
+
+		//
+		indexer = dummy - m_tiles.begin();
+
+		// Add to the conversions count the number of
+		// rows (plus one) that that empty space have to pass
+		// to get to the position: '0' - left up corner
+		inverionsCount += start_tile + indexer / m_width;
+	}
 
 	// But if number of conversions are even
 	// this means that game is solvable
 	return (inverionsCount % 2) == 0;
+}
+
+// Identify position on the game page (2D index) by some 1D index
+identificator GamePage::getTablePos(const size_t& index) const
+{
+	identificator result {};
+
+	result.first = index / m_width;
+	result.second = index % m_width;
+
+	return result;
+}
+
+/*
+We check tiles in the container, and if it's a win position
+we emmit signal to front end
+*/
+void GamePage::checkWin() const
+{
+	// TERRIBLE CYCLE
+	for(size_t index{}; index < winner.size(); index++)
+	{
+		if(m_tiles.at(index).value != winner.at(index).value)
+		{
+			qDebug() << "Game not finished!";
+			return;
+		}
+	}
+
+	//emit pop_window for win
 }
 
 //The QVariant class acts like a union for the most common Qt data types.

@@ -74,6 +74,7 @@ qt_add_qml_module(appFifteen_Puzzle
 	resources/Tile.qml
 	resources/TilesModel.qml
 	resources/DefaultText.qml
+	resources/SmartBar.qml
 )
 
 # Add the target includes for appFifteen_Puzzle

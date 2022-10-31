@@ -6,11 +6,13 @@ import QtQuick.Layouts 1.3
 import QtQuick.Window 2.3
 //import QtGraphicalEffects 1.15
 
+//import BackEnd 1.0
+
 Window {
     id: applicationW
 
-    width: 600
-    height: 630
+	width: 600
+	height: 630
     visible: true
     title: qsTr("15-Puzzle")
 
@@ -19,46 +21,55 @@ Window {
         source: "qrc:/Resources/fonts/NinjaGarden-1gAL.ttf"
     }
 
-    GamePage {
-        anchors.fill: parent
-    }
+	SmartBar {
+		id: _parsedMenuBar
+	}
 
-//    TabBar {
-//        id: bar
-//        width: parent.width
-//        contentHeight: 30
-//        y: parent.height - 30
+	GamePage {
+		id: _parsedGamePage
+		anchors.bottom: parent.bottom
+		width: applicationW.width
+		height: applicationW.height - 30
+	}
 
-//        TabButton {
-//            text: qsTr("Game")
-//            font.bold: true
-//            font.pointSize: 16
-//        }
-//        TabButton {
-//            text: qsTr("About...")
-//            font.pointSize: 14
-//        }
-//    }
+//	TabBar {
+//		id: bar
+//		width: parent.width
+//		contentHeight: 30
+//		y: parent.height - 30
 
-//    StackLayout {
-//        width: parent.width
-//        currentIndex: bar.currentIndex
+//		TabButton {
+//			text: qsTr("Game")
+//			font.bold: true
+//			font.pointSize: 16
+//		}
+//		TabButton {
+//			text: qsTr("About...")
+//			font.pointSize: 14
+//		}
+//	}
 
-//        Item {
-//            id: gameTab
+//	StackLayout {
+//		width: parent.width
+//		currentIndex: bar.currentIndex
 
-//            GamePage {
-//                anchors.fill: gameTab
-//            }
-//        }
+//		Item {
+//			id: gameTab
 
-//        Item {
-//            id: aboutTab
+//			GamePage {
+//				anchors.fill: gameTab
+//				width: applicationW.width
+//				height: applicationW.height - 30
+//			}
+//		}
 
-//            AboutPage {
+//		Item {
+//			id: aboutTab
 
-//            }
-//        }
-//    }
+//			AboutPage {
+
+//			}
+//		}
+//	}
 
 }

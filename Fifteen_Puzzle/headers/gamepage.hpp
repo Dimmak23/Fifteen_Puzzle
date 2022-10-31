@@ -1,9 +1,17 @@
 #ifndef GAMEPAGE_H
 #define GAMEPAGE_H
 
+// Qt headers
 #include <QAbstractListModel>
+
+// C++ headers
 #include <vector>
 
+// Aliases
+using identificator = std::pair<size_t, size_t>;
+
+// Defines
+#define to_i(lvalue) static_cast<int>(lvalue)
 
 class GamePage : public QAbstractListModel
 {
@@ -37,11 +45,16 @@ class GamePage : public QAbstractListModel
 				return *this;
 			}
 
-			// Setting up a method to compare and give result
-			// Are Tile left operand and Tile right operand - equal?
-			bool operator==(const Tile& r_operand)
+			// Setting up a method to compare and give result.
+			// Are Tile left operand and right value - equal?
+			bool operator== (const size_t& right_value) const
 			{
-				return r_operand.value == this->value;
+				return right_value == this->value;
+			}
+			// Are Tile left operand and right_operand.value - equal?
+			bool operator== (const Tile& right_operand) const
+			{
+				return right_operand.value == this->value;
 			}
 		};
 
@@ -51,10 +64,15 @@ class GamePage : public QAbstractListModel
 		// Send to the front end tile content that we don't want to show
 		size_t size() const;
 
+		// Shuffle the tiles with Mersenne Twister random generator
+		Q_INVOKABLE void shuffle();
+
+		// We could ignore move so return type is bool
+		// add Q_INVOKABLE to use method in the QML
+		Q_INVOKABLE bool move(const int& index);
+
 	private:
 
-		// Shuffle the tiles with Mersenne Twister random generator
-		void shuffle();
 
 		// Let's prevent us from passing the too big value as rowIndex
 		bool validatePosition(const size_t& pos) const;
@@ -64,6 +82,15 @@ class GamePage : public QAbstractListModel
 		solvable shuffle
 		*/
 		bool validateShuffle() const;
+
+		// Identify position on the game page (2D index) by some 1D index
+		identificator getTablePos(const size_t& index) const;
+
+		/*
+		We check tiles in the container, and if it's a win position
+		we emmit signal to front end
+		*/
+		void checkWin() const;
 
 		/*
 		Returns the data stored under the given
@@ -95,6 +122,9 @@ class GamePage : public QAbstractListModel
 
 		// Container with tiles content
 		std::vector<Tile> m_tiles;
+
+		// Win position
+		std::vector<Tile> winner;
 };
 
 #endif // GAMEPAGE_H

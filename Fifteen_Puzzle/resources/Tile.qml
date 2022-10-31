@@ -5,28 +5,32 @@ Rectangle {
 
     property string initialText: ""
 
-    color: "transparent"
-//    radius: 15
+	color: "transparent"
+//	color: "brown"
+//	radius: 15
     border.color: "black"
     border.width: 2.5
-    clip: true
+//    clip: true
 
-    Image {
-        id: backer
-        source: "qrc:/Resources/pics/wood.jpg"
-        z: thisTile.z - 1
-        width: thisTile.width
-        height: thisTile.height
-        smooth: true //
-        opacity: 0.9 //
-        fillMode: Image.PreserveAspectCrop //
-    }
+	Image {
+		id: backer
+		source: "qrc:/Resources/pics/wood.jpg"
+		z: thisTile.z - 1
+		width: thisTile.width
+		height: thisTile.height
+		smooth: true //
+		opacity: 0.85 //
+//		fillMode: Image.PreserveAspectCrop //
+	}
 
-    DefaultText {
+	Text {
         id: tileText
+
         text: thisTile.initialText
 
         font {
+			family: resFont.name
+
 			// Math.min(thisTile.width, thisTile.height) / 2 - give us
 			// reasonable font size => RS depending on the tile size.
             // BUT! We should prevent assigning of the value '0' to it.
