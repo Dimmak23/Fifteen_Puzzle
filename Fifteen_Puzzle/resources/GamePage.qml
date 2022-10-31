@@ -31,6 +31,13 @@ GridView {
 
             anchors.fill: _oneTile
             anchors.margins: 2
+
+//			MouseArea: {
+//				anchors.fill: parent,
+//				onClicked: {
+
+//				}
+//			}
         }
     }
 }
