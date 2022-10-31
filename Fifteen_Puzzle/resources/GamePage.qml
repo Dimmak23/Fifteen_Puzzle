@@ -27,6 +27,8 @@ GridView {
 		visible: display !== gameGrid.model.hiddenPos ? true : false
 
         Tile {
+			id: _oneTileText
+
 			initialText: display
 
 			anchors.fill: _oneTile

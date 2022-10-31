@@ -64,12 +64,16 @@ class GamePage : public QAbstractListModel
 		// Send to the front end tile content that we don't want to show
 		size_t size() const;
 
-		// Shuffle the tiles with Mersenne Twister random generator
-		Q_INVOKABLE void shuffle();
-
 		// We could ignore move so return type is bool
 		// add Q_INVOKABLE to use method in the QML
 		Q_INVOKABLE bool move(const int& index);
+
+		Q_INVOKABLE bool resetPage();
+
+		// Shuffle the tiles with Mersenne Twister random generator
+		Q_INVOKABLE void shuffle();
+
+		Q_INVOKABLE int fetchCell(const int& index);
 
 	private:
 

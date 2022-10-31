@@ -1,4 +1,4 @@
-import QtQuick
+import QtQuick 2.15
 import QtQuick.Controls 2.5
 
 import BackEnd 1.0
@@ -21,23 +21,18 @@ GridView {
 			id: _menuGame
 			title: qsTr("&Game")
 
-//			Action {
-//				text: qsTr("&Start new game")
-////				checkable: true
-
-//				onTriggered: { _menuHolder.model.shuffle(); }
-//			}
-
-			MenuItem {
+			Action {
 				text: qsTr("&Start new game")
-//				shortcut: StandardKey.ZoomIn
-				onTriggered: { _menuHolder.model.shuffle(); }
+				shortcut: "Ctrl+N"
+				onTriggered: {
+					_menuHolder.model.resetPage()
+				}
 			}
-
 			MenuSeparator { }
 			Action {
 				text: qsTr("&Quit")
-
+				shortcut: "Esc"
+				onTriggered: { Qt.quit() }
 			}
 		}
 

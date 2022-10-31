@@ -68,9 +68,18 @@ GamePage::GamePage(const size_t &parseWidth, QObject *parent)
 	// Prepare win position
 	winner = m_tiles;
 	winner.erase(winner.end()-1);
-	winner.erase(winner.end()-2);
-	winner.erase(winner.end()-3);
-	winner.erase(winner.end()-4);
+	winner.erase(winner.end()-1);
+	winner.erase(winner.end()-1);
+	winner.erase(winner.end()-1);
+
+	winner.erase(winner.end()-1);
+	winner.erase(winner.end()-1);
+	winner.erase(winner.end()-1);
+	winner.erase(winner.end()-1);
+
+	for(auto& item: winner)
+		qDebug() << item.value;
+
 	// Shuffle tiles
 	shuffle();
 }
@@ -90,6 +99,8 @@ size_t GamePage::size() const
 // We could ignore move so return type is bool
 bool GamePage::move(const int& index)
 {
+	beginResetModel();
+
 	if(!validatePosition(static_cast<size_t>(index))) return false;
 
 	//
@@ -117,7 +128,8 @@ bool GamePage::move(const int& index)
 	std::iter_swap(hiddenTileIterator, pressedTileIterator);
 
 	//This signal is emitted whenever the data in an existing item changes.
-	emit dataChanged(createIndex(0,0), createIndex(m_size,0));
+//	emit dataChanged(createIndex(0,0), createIndex(m_size-1,0));
+	endResetModel();
 
 	// Check are we finish game
 	checkWin();
@@ -125,10 +137,25 @@ bool GamePage::move(const int& index)
 	return true;
 }
 
+bool GamePage::resetPage()
+{
+	beginResetModel();
+
+	shuffle();
+
+	endResetModel();
+
+	qDebug() << "resetPage";
+
+	return true;
+}
+
 // Shuffle the tiles with Mersenne Twister random generator
 void GamePage::shuffle()
 {
-	qDebug() << "Invoked shuffle...";
+//	qDebug() << "Invoked shuffle...";
+
+//	beginResetModel();
 
 	//This can be improoved
 	static auto seed = std::chrono::system_clock::now().time_since_epoch().count();
@@ -147,16 +174,23 @@ void GamePage::shuffle()
 	} while(!validateShuffle());
 
 	//This signal is emitted whenever the data in an existing item changes.
-	emit dataChanged(createIndex(0,0), createIndex(m_size,0));
+//	endResetModel();
 
-	qDebug() << "shuffle() finished";
+//	qDebug() << "shuffle() finished";
 
-	for(auto& item: m_tiles)
-	{
-		qDebug() << item.value;
+//	for(auto& item: m_tiles)
+//	{
+//		qDebug() << item.value;
 
-	}
+//	}
 
+	qDebug() << "enabled";
+
+}
+
+int GamePage::fetchCell(const int& index)
+{
+	return m_tiles.at(index).value;
 }
 
 // Let's prevent us from passing the too big value as rowIndex
@@ -237,11 +271,14 @@ void GamePage::checkWin() const
 		if(m_tiles.at(index).value != winner.at(index).value)
 		{
 			qDebug() << "Game not finished!";
+			qDebug() << m_tiles.at(index).value << "!=" << winner.at(index).value;
+
 			return;
 		}
 	}
 
 	//emit pop_window for win
+	qDebug() << "You won!";
 }
 
 //The QVariant class acts like a union for the most common Qt data types.
