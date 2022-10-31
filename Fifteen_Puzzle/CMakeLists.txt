@@ -45,6 +45,9 @@ file(GLOB_RECURSE SOURCES
 # Add the forms directory to the AUTOUIC search paths
 #set(CMAKE_AUTOUIC_SEARCH_PATHS ${CMAKE_AUTOUIC_SEARCH_PATHS} ${RESOURCE_DIR})
 
+# Set icon for application
+set(APP_ICON_WIN "${CMAKE_CURRENT_SOURCE_DIR}/resources/src_icon.rc")
+
 if (WIN32)
 	qt_add_executable(
 		appFifteen_Puzzle
@@ -53,6 +56,7 @@ if (WIN32)
 		headers/gamepage.cpp
 		headers/gamepage.hpp
 		resources/resource.qrc
+		${APP_ICON_WIN}
 	)
 elseif (UNIX)
 	qt_add_executable(
@@ -61,8 +65,10 @@ elseif (UNIX)
 		headers/gamepage.cpp
 		headers/gamepage.hpp
 		resources/resource.qrc
+		${APP_ICON_WIN}
 	)
 endif()
+
 
 qt_add_qml_module(appFifteen_Puzzle
     URI Fifteen_Puzzle
