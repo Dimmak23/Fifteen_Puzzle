@@ -24,7 +24,7 @@ GridView {
 		height: gameGrid.cellHeight
 
 		// Don't show the #16-tile
-		visible: display !== 16 ? true : false
+		visible: display !== gameGrid.model.hiddenPos ? true : false
 
         Tile {
 			initialText: display

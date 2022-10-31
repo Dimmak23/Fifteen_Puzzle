@@ -11,6 +11,8 @@ class GamePage : public QAbstractListModel
 
 	// Using Q_PROPERTY to pass game size consts to the FrontEnd
 	Q_PROPERTY(int width READ width CONSTANT)
+	// We know about hidden tile from this property
+	Q_PROPERTY(int hiddenPos READ size CONSTANT)
 
 	public:
 		GamePage(
@@ -43,14 +45,24 @@ class GamePage : public QAbstractListModel
 			}
 		};
 
+		// Send to the front end game page width in tile units
 		size_t width() const;
+
+		// Send to the front end tile content that we don't want to show
+		size_t size() const;
 
 	private:
 
+		// Shuffle the tiles with Mersenne Twister random generator
 		void shuffle();
 
+		// Let's prevent us from passing the too big value as rowIndex
 		bool validatePosition(const size_t& pos) const;
 
+		/*
+		Validation method for checking if we are generate the
+		solvable shuffle
+		*/
 		bool validateShuffle() const;
 
 		/*
@@ -81,6 +93,7 @@ class GamePage : public QAbstractListModel
 		const size_t m_width;
 		const size_t m_size;
 
+		// Container with tiles content
 		std::vector<Tile> m_tiles;
 };
 

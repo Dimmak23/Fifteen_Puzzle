@@ -13,13 +13,22 @@ GamePage::GamePage(const size_t &parseWidth, QObject *parent)
 	shuffle();
 }
 
+// Send to the front end game page width in tile units
 size_t GamePage::width() const
 {
 	return m_width;
 }
 
+// Send to the front end tile content that we don't want to show
+size_t GamePage::size() const
+{
+	return m_width;
+}
+
+// Shuffle the tiles with Mersenne Twister random generator
 void GamePage::shuffle()
 {
+	//This can be improoved
 	static auto seed = std::chrono::system_clock::now().time_since_epoch().count();
 	static std::mt19937 generator(seed);
 
@@ -34,7 +43,6 @@ void GamePage::shuffle()
 	do {
 		std::shuffle(m_tiles.begin(), m_tiles.end(), generator);
 	} while(!validateShuffle());
-
 
 }
 
