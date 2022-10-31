@@ -17,10 +17,11 @@ set(CMAKE_AUTOMOC ON) #support source files
 set(CMAKE_AUTOUIC ON) #support header files
 set(CMAKE_AUTORCC ON) #support *.qrc files
 
-set(CMAKE_CXX_STANDARD 17)
+# We need C++ 20 because of std::ranges
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(Qt6 6.2 COMPONENTS Quick REQUIRED)
+find_package(Qt6 6.2 COMPONENTS Quick Qml REQUIRED)
 
 #==================================INCLUSION OF PROJECT FIELS==================================
 
@@ -49,12 +50,16 @@ if (WIN32)
 		appFifteen_Puzzle
 		WIN32
 		src/main.cpp
+		headers/gamepage.cpp
+		headers/gamepage.hpp
 		resources/resource.qrc
 	)
 elseif (UNIX)
 	qt_add_executable(
 		appFifteen_Puzzle
 		src/main.cpp
+		headers/gamepage.cpp
+		headers/gamepage.hpp
 		resources/resource.qrc
 	)
 endif()
@@ -95,6 +100,7 @@ target_link_libraries(
 	appFifteen_Puzzle
     PRIVATE
 	Qt6::Quick
+	Qt${QT_VERSION_MAJOR}::Qml
 )
 
 install(TARGETS appFifteen_Puzzle
