@@ -22,7 +22,7 @@ size_t GamePage::width() const
 // Send to the front end tile content that we don't want to show
 size_t GamePage::size() const
 {
-	return m_width;
+	return m_size;
 }
 
 // Shuffle the tiles with Mersenne Twister random generator
