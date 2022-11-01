@@ -1,12 +1,13 @@
 import QtQuick
 import QtQuick.Controls 2.5
 import QtQuick.Layouts 1.3
+//import QtQuick.Dialogs
 
 //move this
 import QtQuick.Window 2.3
 //import QtGraphicalEffects 1.15
 
-//import BackEnd 1.0
+import BackEnd 1.0
 
 Window {
     id: applicationW
@@ -16,60 +17,100 @@ Window {
     visible: true
     title: qsTr("15-Puzzle")
 
-    FontLoader {
-        id: resFont
-        source: "qrc:/Resources/fonts/NinjaGarden-1gAL.ttf"
-    }
+	FontLoader {
+		id: resFont
+		source: "qrc:/Resources/fonts/NinjaGarden-1gAL.ttf"
+	}
 
-	SmartBar {
-		id: _parsedMenuBar
+	Image {
+		id: background
+		source: "qrc:/Resources/pics/metalic.jpg"
+		z: applicationW.z - 1
+		width: applicationW.width
+		height: applicationW.height
+		smooth: true //
 	}
 
 	GamePage {
 		id: _parsedGamePage
+
+		// MIND your steps, you need to initialize model
+		// from back end only once!
+		model: CPP_Tiles {
+			// This model will be used in the GamePage, MenuBar,...
+		}
+
 		anchors.bottom: parent.bottom
 		width: applicationW.width
 		height: applicationW.height - 30
 	}
 
-//	TabBar {
-//		id: bar
-//		width: parent.width
-//		contentHeight: 30
-//		y: parent.height - 30
+	SmartBar {
+		id: _parsedMenuBar
+	}
 
-//		TabButton {
-//			text: qsTr("Game")
-//			font.bold: true
-//			font.pointSize: 16
-//		}
-//		TabButton {
-//			text: qsTr("About...")
-//			font.pointSize: 14
-//		}
-//	}
+	Rectangle {
+		id: _winNotice
+		visible: false
 
-//	StackLayout {
-//		width: parent.width
-//		currentIndex: bar.currentIndex
+		z: _parsedGamePage.z + 1
 
-//		Item {
-//			id: gameTab
+		width: _parsedGamePage.width
+		height: _parsedGamePage.height
 
-//			GamePage {
-//				anchors.fill: gameTab
-//				width: applicationW.width
-//				height: applicationW.height - 30
-//			}
+		color: "black"
+		opacity: 0.93
+
+		anchors.top: _parsedGamePage.top
+
+//		Text {
+//			id: _winText
+
+
 //		}
 
-//		Item {
-//			id: aboutTab
+		Button {
+			id: _newGame
+			text: "New..."
+			flat: false
 
-//			AboutPage {
+			width: _parsedGamePage.width / 4
+			height: _parsedGamePage.height / 14
 
-//			}
-//		}
-//	}
+			anchors.right: _winNotice.right
+			anchors.bottom: _winNotice.bottom
+			anchors.bottomMargin: 10
+			anchors.rightMargin: 10
+
+			onClicked: {
+				_parsedGamePage.model.newPage()
+				_winNotice.visible = false
+			}
+		}
+
+		Button {
+			id: _quitGame
+			text: "Quit"
+			flat: false
+
+			width: _parsedGamePage.width / 4
+			height: _parsedGamePage.height / 14
+
+			anchors.left: _winNotice.left
+			anchors.bottom: _winNotice.bottom
+			anchors.bottomMargin: 10
+			anchors.leftMargin: 10
+
+			onClicked: {
+				Qt.quit()
+			}
+		}
+
+	}
+
+	Connections{
+		target: _parsedGamePage.model
+		onStatusChanged: _winNotice.visible = true;
+	}
 
 }

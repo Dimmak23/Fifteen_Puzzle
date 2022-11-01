@@ -1,50 +1,57 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.5
 
-import BackEnd 1.0
+MenuBar {
+	id: _menuBar
+	width: applicationW.width
+	height: 30
+	visible: true
 
-GridView {
-	id: _menuHolder
+	Menu {
+		id: _menuGame
+		title: qsTr("Game")
 
-	// We have passed BackEnd model
-	model: CPP_Tiles {
+		Action {
+			text: qsTr("Start &new game (Ctrl+N)")
+			shortcut: "Ctrl+N"
+			onTriggered: {
+				_parsedGamePage.model.newPage()
+			}
+		}
+		Action {
+			text: qsTr("&Reset current game (Ctrl+R)")
+			shortcut: "Ctrl+R"
+			onTriggered: {
+				_parsedGamePage.model.resetPage()
+			}
+		}
+		MenuSeparator { }
+		Action {
+			text: qsTr("Quit (Esc)")
+			shortcut: "Esc"
+			onTriggered: { Qt.quit() }
+		}
+	}
+	Menu {
+		title: qsTr("Settings")
 
+		Menu {
+			title: "Edit difficulty level"
+			Action {
+				text: qsTr("&Easy - 3x3 (Ctrl+E)")
+			}
+			Action {
+				text: qsTr("&Medium - 4x4 (Ctrl+M)")
+			}
+			Action {
+				text: qsTr("&Hard - 5x5 (Ctrl+H)")
+			}
+		}
 	}
 
-	delegate: MenuBar {
-		id: _menuBar
-		width: applicationW.width
-		height: 30
-		visible: true
-
-		Menu {
-			id: _menuGame
-			title: qsTr("&Game")
-
-			Action {
-				text: qsTr("&Start new game")
-				shortcut: "Ctrl+N"
-				onTriggered: {
-					_menuHolder.model.resetPage()
-				}
-			}
-			MenuSeparator { }
-			Action {
-				text: qsTr("&Quit")
-				shortcut: "Esc"
-				onTriggered: { Qt.quit() }
-			}
-		}
-
-		Menu {
-			title: qsTr("&Settings")
-			Action { text: qsTr("Edit difficulty level") }
-		}
-
-		Menu {
-			title: qsTr("&Help")
-			Action { text: qsTr("&How to play?") }
-			Action { text: qsTr("&About...") }
-		}
+	Menu {
+		title: qsTr("Help")
+		Action { text: qsTr("How &to play? (Ctrl+T)") }
+		Action { text: qsTr("&About... (Ctrl+A)") }
 	}
 }

@@ -13,7 +13,7 @@ int main(int argc, char *argv[])
 	QQmlApplicationEngine engine;
 
 	//Init GamePage utility
-	GamePage model;
+//	GamePage model;
 
 	/*
 	This template function registers the C++ type in the QML system

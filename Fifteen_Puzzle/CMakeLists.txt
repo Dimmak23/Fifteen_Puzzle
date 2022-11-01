@@ -107,7 +107,7 @@ target_link_libraries(
 	appFifteen_Puzzle
     PRIVATE
 	Qt6::Quick
-	Qt${QT_VERSION_MAJOR}::Qml
+	Qt6::Qml
 )
 
 install(TARGETS appFifteen_Puzzle

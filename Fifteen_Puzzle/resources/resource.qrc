@@ -1,6 +1,7 @@
 <RCC>
     <qresource prefix="/Resources/pics">
         <file>wood.jpg</file>
+        <file>metalic.jpg</file>
     </qresource>
     <qresource prefix="/Resources/fonts">
         <file>NinjaGarden-1gAL.ttf</file>

@@ -10,12 +10,12 @@ GridView {
     id: gameGrid
 
 	// We have passed BackEnd model
-	model: CPP_Tiles {
+//	model: CPP_Tiles {
 
-	}
+//	}
 
-	cellWidth: width / gameGrid.model.width
-	cellHeight: height / gameGrid.model.width
+	cellWidth: width / _parsedGamePage.model.width
+	cellHeight: height / _parsedGamePage.model.width
 
     delegate: Item {
         id: _oneTile
@@ -24,7 +24,7 @@ GridView {
 		height: gameGrid.cellHeight
 
 		// Don't show the #<last>-tile
-		visible: display !== gameGrid.model.hiddenPos ? true : false
+		visible: display !== _parsedGamePage.model.hiddenPos ? true : false
 
         Tile {
 			id: _oneTileText
@@ -39,8 +39,7 @@ GridView {
 				acceptedButtons: Qt.LeftButton
 				onClicked: {
 					// We are passing tile by index to back end
-					gameGrid.model.move(index);
-
+					_parsedGamePage.model.move(index);
 				}
 			}
         }

@@ -21,6 +21,8 @@ class GamePage : public QAbstractListModel
 	Q_PROPERTY(int width READ width CONSTANT)
 	// We know about hidden tile from this property
 	Q_PROPERTY(int hiddenPos READ size CONSTANT)
+	//
+	Q_PROPERTY(NOTIFY statusChanged)
 
 	public:
 		GamePage(
@@ -66,17 +68,24 @@ class GamePage : public QAbstractListModel
 
 		// We could ignore move so return type is bool
 		// add Q_INVOKABLE to use method in the QML
-		Q_INVOKABLE bool move(const int& index);
+		Q_INVOKABLE /*bool*/void move(const int& index);
 
-		Q_INVOKABLE bool resetPage();
+		// Invoke initializing the new game
+		Q_INVOKABLE void newPage();
 
-		// Shuffle the tiles with Mersenne Twister random generator
-		Q_INVOKABLE void shuffle();
+		// Invoke reset to the start position of the current game
+		Q_INVOKABLE void resetPage();
 
-		Q_INVOKABLE int fetchCell(const int& index);
+		bool status;
+
+	signals:
+
+		void statusChanged();
 
 	private:
 
+		// Shuffle the tiles with Mersenne Twister random generator
+		void shuffle();
 
 		// Let's prevent us from passing the too big value as rowIndex
 		bool validatePosition(const size_t& pos) const;
@@ -94,7 +103,7 @@ class GamePage : public QAbstractListModel
 		We check tiles in the container, and if it's a win position
 		we emmit signal to front end
 		*/
-		void checkWin() const;
+		void checkWin();
 
 		/*
 		Returns the data stored under the given
@@ -126,6 +135,9 @@ class GamePage : public QAbstractListModel
 
 		// Container with tiles content
 		std::vector<Tile> m_tiles;
+
+		// Container with initial tiles content after succesful shuffle
+		std::vector<Tile> tiles_saved;
 
 		// Win position
 		std::vector<Tile> winner;

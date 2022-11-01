@@ -59,14 +59,25 @@ GamePage::GamePage(const size_t &parseWidth, QObject *parent)
 	  m_width(parseWidth),
 	  m_size(parseWidth*parseWidth)
 {
+	qDebug() << "Constructing game ogject";
+
+	status = false;
+
 	// Make sure that we are not dealing with game page with width: '0' or less
 	Q_ASSERT(parseWidth > 0);
 
 	// Prepare tiles
 	m_tiles.resize(m_size);
 	std::iota(m_tiles.begin(), m_tiles.end(), 1);
+
 	// Prepare win position
 	winner = m_tiles;
+
+	winner.erase(winner.end()-1);
+	winner.erase(winner.end()-1);
+	winner.erase(winner.end()-1);
+	winner.erase(winner.end()-1);
+
 	winner.erase(winner.end()-1);
 	winner.erase(winner.end()-1);
 	winner.erase(winner.end()-1);
@@ -77,11 +88,15 @@ GamePage::GamePage(const size_t &parseWidth, QObject *parent)
 	winner.erase(winner.end()-1);
 	winner.erase(winner.end()-1);
 
-	for(auto& item: winner)
-		qDebug() << item.value;
+	winner.erase(winner.end()-1);
+	winner.erase(winner.end()-1);
+	winner.erase(winner.end()-1);
 
 	// Shuffle tiles
 	shuffle();
+
+	// Save this shuffle for the reseting
+	tiles_saved = m_tiles;
 }
 
 // Send to the front end game page width in tile units
@@ -97,11 +112,14 @@ size_t GamePage::size() const
 }
 
 // We could ignore move so return type is bool
-bool GamePage::move(const int& index)
+void GamePage::move(const int& index)
 {
+	// Make sure that game isn't ended up
+	if(status) return;
+
 	beginResetModel();
 
-	if(!validatePosition(static_cast<size_t>(index))) return false;
+	if(!validatePosition(static_cast<size_t>(index))) return;
 
 	//
 	const identificator pressedTile {getTablePos(index)};
@@ -119,7 +137,7 @@ bool GamePage::move(const int& index)
 	};
 
 	// We can't swap hidden tile with tile on the diagonal or far from it
-	if (!movableCells(pressedTile, hiddenTile)) return false;
+	if (!movableCells(pressedTile, hiddenTile)) return;
 
 	// Iterator to the pressed tile
 	auto pressedTileIterator = std::ranges::find(m_tiles, m_tiles.at(index));
@@ -127,35 +145,37 @@ bool GamePage::move(const int& index)
 	// Swap data in the tiles by iterators
 	std::iter_swap(hiddenTileIterator, pressedTileIterator);
 
-	//This signal is emitted whenever the data in an existing item changes.
-//	emit dataChanged(createIndex(0,0), createIndex(m_size-1,0));
+	//
 	endResetModel();
 
 	// Check are we finish game
 	checkWin();
-
-	return true;
 }
 
-bool GamePage::resetPage()
+// Invoke initializing the new game
+void GamePage::newPage()
 {
+	status = false;
+
 	beginResetModel();
-
 	shuffle();
-
+	tiles_saved = m_tiles;
 	endResetModel();
+}
 
-	qDebug() << "resetPage";
+// Invoke reset to the start position of the current game
+void GamePage::resetPage()
+{
+	status = false;
 
-	return true;
+	beginResetModel();
+	m_tiles = tiles_saved;
+	endResetModel();
 }
 
 // Shuffle the tiles with Mersenne Twister random generator
 void GamePage::shuffle()
 {
-//	qDebug() << "Invoked shuffle...";
-
-//	beginResetModel();
 
 	//This can be improoved
 	static auto seed = std::chrono::system_clock::now().time_since_epoch().count();
@@ -173,24 +193,6 @@ void GamePage::shuffle()
 		std::shuffle(m_tiles.begin(), m_tiles.end(), generator);
 	} while(!validateShuffle());
 
-	//This signal is emitted whenever the data in an existing item changes.
-//	endResetModel();
-
-//	qDebug() << "shuffle() finished";
-
-//	for(auto& item: m_tiles)
-//	{
-//		qDebug() << item.value;
-
-//	}
-
-	qDebug() << "enabled";
-
-}
-
-int GamePage::fetchCell(const int& index)
-{
-	return m_tiles.at(index).value;
 }
 
 // Let's prevent us from passing the too big value as rowIndex
@@ -263,7 +265,7 @@ identificator GamePage::getTablePos(const size_t& index) const
 We check tiles in the container, and if it's a win position
 we emmit signal to front end
 */
-void GamePage::checkWin() const
+void GamePage::checkWin()
 {
 	// TERRIBLE CYCLE
 	for(size_t index{}; index < winner.size(); index++)
@@ -277,7 +279,11 @@ void GamePage::checkWin() const
 		}
 	}
 
+	status = true;
+
 	//emit pop_window for win
+	emit statusChanged();
+
 	qDebug() << "You won!";
 }
 
