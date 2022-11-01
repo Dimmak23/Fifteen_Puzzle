@@ -84,6 +84,9 @@ class GamePage : public QAbstractListModel
 		// Invoke reset to the start position of the current game
 		Q_INVOKABLE void resetPage();
 
+		// Invoke resizing tiles grid method
+		Q_INVOKABLE void resizeGrid(const int& width);
+
 		//
 		bool status;
 
@@ -144,8 +147,8 @@ class GamePage : public QAbstractListModel
 		int rowCount(const QModelIndex &parent = QModelIndex()) const override;
 
 		static constexpr size_t initialPageWidth {4};
-		const size_t m_width;
-		const size_t m_size;
+		size_t m_width;
+		size_t m_size;
 
 		// Container with tiles content
 		std::vector<Tile> m_tiles;

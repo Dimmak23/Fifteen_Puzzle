@@ -174,6 +174,47 @@ void GamePage::resetPage()
 	endResetModel();
 }
 
+void GamePage::resizeGrid(const int& width)
+{
+	beginResetModel();
+
+	qDebug() << "Resizing game ogject";
+
+	status = false;
+	pause = false;
+
+	// Make sure that we are not dealing with game page with width: '0' or less
+	Q_ASSERT(width > 0);
+
+	m_width = width;
+	m_size = width*width;
+
+	// Prepare tiles
+	m_tiles.resize(m_size);
+	std::iota(m_tiles.begin(), m_tiles.end(), 1);
+
+	// Prepare win position
+	winner = m_tiles;
+
+	winner.erase(winner.end()-1);
+	winner.erase(winner.end()-1);
+	winner.erase(winner.end()-1);
+	winner.erase(winner.end()-1);
+
+	winner.erase(winner.end()-1);
+	winner.erase(winner.end()-1);
+	winner.erase(winner.end()-1);
+	winner.erase(winner.end()-1);
+
+	// Shuffle tiles
+	shuffle();
+
+	// Save this shuffle for the reseting
+	tiles_saved = m_tiles;
+
+	endResetModel();
+}
+
 // Shuffle the tiles with Mersenne Twister random generator
 void GamePage::shuffle()
 {

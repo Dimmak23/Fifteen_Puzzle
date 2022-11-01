@@ -1,14 +1,6 @@
 import QtQuick
 import QtQuick.Controls 2.5
 
-//Item {
-
-//    Label {
-//        text: "Game designed and produced by Dmytro Kovryzhenko, 31 october 2022.\nAll rights reserved."
-//    }
-
-//}
-
 Rectangle {
 	id: _aboutNotice
 	visible: false
@@ -27,7 +19,10 @@ Rectangle {
 		id: _winText
 
 		color: "white"
-		text: "Game designed and produced by Dmytro Kovryzhenko,\n31 october 2022.\nAll rights reserved."
+
+		//TODO: fix this
+		text: "Game designed and produced\nby Dmytro Kovryzhenko,
+2 november 2022.\n\n\nAll rights reserved."
 
 		anchors.left: parent.left
 		anchors.top: parent.top

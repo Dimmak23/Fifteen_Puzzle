@@ -67,6 +67,16 @@ Rectangle {
 		text: "New..."
 		flat: false
 
+		action: okPressed
+		Action {
+			id: okPressed
+			shortcut: "Enter"
+			onTriggered: {
+				_parsedGamePage.model.newPage()
+				_winNotice.visible = false
+			}
+		}
+
 		width: Math.max(_parsedGamePage.width / 4, 5)
 		height: Math.max(_parsedGamePage.height / 16, 10)
 
@@ -85,6 +95,7 @@ Rectangle {
 		id: _quitGame
 		text: "Quit"
 		flat: false
+//		shortcut: "Esc"
 
 		width: Math.max(_parsedGamePage.width / 4, 5)
 		height: Math.max(_parsedGamePage.height / 16, 10)

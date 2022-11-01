@@ -1,11 +1,9 @@
 import QtQuick
 import QtQuick.Controls 2.5
 import QtQuick.Layouts 1.3
-//import QtQuick.Dialogs
 
 //move this
 import QtQuick.Window 2.3
-//import QtGraphicalEffects 1.15
 
 import BackEnd 1.0
 
@@ -43,6 +41,10 @@ Window {
 		anchors.bottom: parent.bottom
 		width: applicationW.width
 		height: applicationW.height - 30
+
+		// We need this properties to pass them to the SmartBar later
+		property real _parsedCellWidth: width / _parsedGamePage.model.width
+		property real _parsedCellHeight: height / _parsedGamePage.model.width
 	}
 
 	SmartBar {

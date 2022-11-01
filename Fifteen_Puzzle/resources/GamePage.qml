@@ -14,8 +14,8 @@ GridView {
 
 //	}
 
-	cellWidth: width / _parsedGamePage.model.width
-	cellHeight: height / _parsedGamePage.model.width
+	cellWidth: _parsedGamePage._parsedCellWidth
+	cellHeight: _parsedGamePage._parsedCellHeight
 
     delegate: Item {
         id: _oneTile
