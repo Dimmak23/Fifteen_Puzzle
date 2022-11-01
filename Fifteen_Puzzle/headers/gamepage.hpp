@@ -23,6 +23,8 @@ class GamePage : public QAbstractListModel
 	Q_PROPERTY(int hiddenPos READ size CONSTANT)
 	//
 	Q_PROPERTY(NOTIFY statusChanged)
+	//
+	Q_PROPERTY(bool pause READ getPause WRITE setPause NOTIFY pauseChanged)
 
 	public:
 		GamePage(
@@ -66,6 +68,12 @@ class GamePage : public QAbstractListModel
 		// Send to the front end tile content that we don't want to show
 		size_t size() const;
 
+		//
+		void setPause(const bool& boolean){ pause = boolean; emit pauseChanged(); }
+
+		//
+		bool getPause(){ return pause; }
+
 		// We could ignore move so return type is bool
 		// add Q_INVOKABLE to use method in the QML
 		Q_INVOKABLE /*bool*/void move(const int& index);
@@ -76,11 +84,17 @@ class GamePage : public QAbstractListModel
 		// Invoke reset to the start position of the current game
 		Q_INVOKABLE void resetPage();
 
+		//
 		bool status;
+
+		//
+		bool pause;
 
 	signals:
 
 		void statusChanged();
+
+		void pauseChanged();
 
 	private:
 

@@ -49,68 +49,19 @@ Window {
 		id: _parsedMenuBar
 	}
 
-	Rectangle {
-		id: _winNotice
+	WinPage {
+		id: _parsedWinPage
 		visible: false
+	}
 
-		z: _parsedGamePage.z + 1
-
-		width: _parsedGamePage.width
-		height: _parsedGamePage.height
-
-		color: "black"
-		opacity: 0.93
-
-		anchors.top: _parsedGamePage.top
-
-//		Text {
-//			id: _winText
-
-
-//		}
-
-		Button {
-			id: _newGame
-			text: "New..."
-			flat: false
-
-			width: _parsedGamePage.width / 4
-			height: _parsedGamePage.height / 14
-
-			anchors.right: _winNotice.right
-			anchors.bottom: _winNotice.bottom
-			anchors.bottomMargin: 10
-			anchors.rightMargin: 10
-
-			onClicked: {
-				_parsedGamePage.model.newPage()
-				_winNotice.visible = false
-			}
-		}
-
-		Button {
-			id: _quitGame
-			text: "Quit"
-			flat: false
-
-			width: _parsedGamePage.width / 4
-			height: _parsedGamePage.height / 14
-
-			anchors.left: _winNotice.left
-			anchors.bottom: _winNotice.bottom
-			anchors.bottomMargin: 10
-			anchors.leftMargin: 10
-
-			onClicked: {
-				Qt.quit()
-			}
-		}
-
+	AboutPage {
+		id: _parsedAboutPage
+		visible: false
 	}
 
 	Connections{
 		target: _parsedGamePage.model
-		onStatusChanged: _winNotice.visible = true;
+		function onStatusChanged() { _parsedWinPage.visible = true; }
 	}
 
 }

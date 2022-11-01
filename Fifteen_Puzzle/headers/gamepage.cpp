@@ -62,6 +62,7 @@ GamePage::GamePage(const size_t &parseWidth, QObject *parent)
 	qDebug() << "Constructing game ogject";
 
 	status = false;
+	pause = false;
 
 	// Make sure that we are not dealing with game page with width: '0' or less
 	Q_ASSERT(parseWidth > 0);
@@ -115,7 +116,7 @@ size_t GamePage::size() const
 void GamePage::move(const int& index)
 {
 	// Make sure that game isn't ended up
-	if(status) return;
+	if(status || pause) return;
 
 	beginResetModel();
 

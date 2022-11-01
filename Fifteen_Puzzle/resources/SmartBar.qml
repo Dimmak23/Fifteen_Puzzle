@@ -52,6 +52,13 @@ MenuBar {
 	Menu {
 		title: qsTr("Help")
 		Action { text: qsTr("How &to play? (Ctrl+T)") }
-		Action { text: qsTr("&About... (Ctrl+A)") }
+		Action {
+			text: qsTr("&About... (Ctrl+A)")
+			shortcut: "Ctrl+A"
+			onTriggered: {
+				_parsedAboutPage.visible = true;
+				_parsedGamePage.model.pause = true;
+			}
+		}
 	}
 }
