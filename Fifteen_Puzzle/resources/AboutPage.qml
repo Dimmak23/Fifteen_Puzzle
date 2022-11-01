@@ -46,6 +46,8 @@ Rectangle {
 		id: _closeAbout
 		text: "Ok"
 		flat: false
+		focus: true //focus on this button, need to be activated by 'Enter' key
+		highlighted: true //also highlight it, that user will know
 
 		width: Math.max(_parsedGamePage.width / 4, 5)
 		height: Math.max(_parsedGamePage.height / 16, 10)
@@ -55,10 +57,13 @@ Rectangle {
 		anchors.bottomMargin: 10
 		anchors.rightMargin: 10
 
-		onClicked: {
-//			_parsedGamePage.model.newPage()
-			_aboutNotice.visible = false;
+		onClicked: _closeAbout.proceedOk()
+		Keys.onReturnPressed: _closeAbout.proceedOk() // Enter key
+		Keys.onEnterPressed: _closeAbout.proceedOk() // Numpad enter key
+
+		function proceedOk() {
 			_parsedGamePage.model.pause = false;
+			_aboutNotice.visible = false;
 		}
 	}
 }

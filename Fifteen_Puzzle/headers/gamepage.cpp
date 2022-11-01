@@ -157,6 +157,7 @@ void GamePage::move(const int& index)
 void GamePage::newPage()
 {
 	status = false;
+	pause = false;
 
 	beginResetModel();
 	shuffle();
@@ -168,6 +169,7 @@ void GamePage::newPage()
 void GamePage::resetPage()
 {
 	status = false;
+	pause = false;
 
 	beginResetModel();
 	m_tiles = tiles_saved;

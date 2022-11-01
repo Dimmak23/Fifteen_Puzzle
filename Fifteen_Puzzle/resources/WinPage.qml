@@ -1,4 +1,4 @@
-import QtQuick 
+import QtQuick 2.15
 import QtQuick.Controls 2.5
 
 Rectangle {
@@ -66,16 +66,8 @@ Rectangle {
 		id: _newGame
 		text: "New..."
 		flat: false
-
-		action: okPressed
-		Action {
-			id: okPressed
-			shortcut: "Enter"
-			onTriggered: {
-				_parsedGamePage.model.newPage()
-				_winNotice.visible = false
-			}
-		}
+		focus: true //focus on this button, need to be activated by 'Enter' key
+		highlighted: true //also highlight it, that user will know
 
 		width: Math.max(_parsedGamePage.width / 4, 5)
 		height: Math.max(_parsedGamePage.height / 16, 10)
@@ -85,7 +77,11 @@ Rectangle {
 		anchors.bottomMargin: 10
 		anchors.rightMargin: 10
 
-		onClicked: {
+		onClicked: _newGame.proceedOk()
+		Keys.onReturnPressed: _newGame.proceedOk() // Enter key
+		Keys.onEnterPressed: _newGame.proceedOk() // Numpad enter key
+
+		function proceedOk() {
 			_parsedGamePage.model.newPage()
 			_winNotice.visible = false
 		}
@@ -95,7 +91,6 @@ Rectangle {
 		id: _quitGame
 		text: "Quit"
 		flat: false
-//		shortcut: "Esc"
 
 		width: Math.max(_parsedGamePage.width / 4, 5)
 		height: Math.max(_parsedGamePage.height / 16, 10)
