@@ -22,7 +22,7 @@ class GamePage : public QAbstractListModel
 	// We know about hidden tile from this property
 	Q_PROPERTY(int hiddenPos READ size CONSTANT)
 	// Provide access to front-end for 'status' variable
-	Q_PROPERTY(bool finished READ getFinished CONSTANT NOTIFY finishedChanged)
+	Q_PROPERTY(bool finished READ getFinished NOTIFY finishedChanged)
 	// Provide access to front-end for 'pause' variable
 	Q_PROPERTY(bool pause READ getPause WRITE setPause NOTIFY pauseChanged)
 
