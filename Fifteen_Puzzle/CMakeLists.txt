@@ -1,4 +1,4 @@
-#=========================================BUILD PROJECT========================================
+#=================================BUILD PROJECT=================================
 
 cmake_minimum_required(VERSION 3.16)
 
@@ -8,7 +8,7 @@ elseif (UNIX)
 	project(Fifteen_Puzzle)
 endif()
 
-#========================================INCLUSION OF QT=======================================
+#================================INCLUSION OF QT================================
 
 # Include THIS directory
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
@@ -23,7 +23,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(Qt6 6.2 COMPONENTS Quick Qml REQUIRED)
 
-#==================================INCLUSION OF PROJECT FIELS==================================
+#==========================INCLUSION OF PROJECT FIELS===========================
 
 set(SRC_DIR "${CMAKE_SOURCE_DIR}/src")
 set(HEADERS_DIR "${CMAKE_SOURCE_DIR}/headers")
@@ -40,7 +40,7 @@ file(GLOB_RECURSE SOURCES
 	"${RESOURCE_DIR}/*.qrc"
 )
 
-#=====================================SETUP THE EXECUTABLE=====================================
+#==============================SETUP THE EXECUTABLE=============================
 
 # Add the forms directory to the AUTOUIC search paths
 #set(CMAKE_AUTOUIC_SEARCH_PATHS ${CMAKE_AUTOUIC_SEARCH_PATHS} ${RESOURCE_DIR})
@@ -76,12 +76,9 @@ qt_add_qml_module(appFifteen_Puzzle
     QML_FILES
 	resources/main.qml
 	resources/GamePage.qml
-	resources/AboutPage.qml
 	resources/Tile.qml
-	resources/TilesModel.qml
-	resources/DefaultText.qml
 	resources/SmartBar.qml
-	resources/WinPage.qml
+	resources/TwoButtonPage.qml
 )
 
 # Add the target includes for appFifteen_Puzzle
@@ -95,12 +92,12 @@ target_include_directories(
 set_target_properties(appFifteen_Puzzle PROPERTIES
     MACOSX_BUNDLE_GUI_IDENTIFIER my.example.com
     MACOSX_BUNDLE_BUNDLE_VERSION ${PROJECT_VERSION}
-    MACOSX_BUNDLE_SHORT_VERSION_STRING ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}
+	MACOSX_BUNDLE_SHORT_VERSION_STRING ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}
     MACOSX_BUNDLE TRUE
     WIN32_EXECUTABLE TRUE
 )
 
-#=======================================LINKING LIBRARIES======================================
+#===============================LINKING LIBRARIES===============================
 
 # Links the executable to Qt's libraries
 # Applies compiler and linker flags as specified by the linked-to libraries

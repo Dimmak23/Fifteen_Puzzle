@@ -11,7 +11,7 @@ Rectangle {
 	height: _parsedGamePage.height
 
 	color: "black"
-	opacity: 0.93
+	opacity: 0.87
 
 	anchors.top: _parsedGamePage.top
 
@@ -77,14 +77,9 @@ Rectangle {
 		anchors.bottomMargin: 10
 		anchors.rightMargin: 10
 
-		onClicked: _newGame.proceedOk()
-		Keys.onReturnPressed: _newGame.proceedOk() // Enter key
-		Keys.onEnterPressed: _newGame.proceedOk() // Numpad enter key
-
-		function proceedOk() {
-			_parsedGamePage.model.newPage()
-			_winNotice.visible = false
-		}
+		onClicked: applicationW.proceedOk()
+		Keys.onReturnPressed: applicationW.proceedOk() // Enter key
+		Keys.onEnterPressed: applicationW.proceedOk() // Numpad enter key
 	}
 
 	Button {

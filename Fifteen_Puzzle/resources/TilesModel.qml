@@ -1,5 +1,0 @@
-import QtQuick
-
-ListModel {
-	ListElement{}
-}

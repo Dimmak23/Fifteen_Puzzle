@@ -21,46 +21,17 @@ class GamePage : public QAbstractListModel
 	Q_PROPERTY(int width READ width CONSTANT)
 	// We know about hidden tile from this property
 	Q_PROPERTY(int hiddenPos READ size CONSTANT)
-	//
-	Q_PROPERTY(NOTIFY statusChanged)
-	//
+	// Provide access to front-end for 'status' variable
+	Q_PROPERTY(bool finished READ getFinished CONSTANT NOTIFY finishedChanged)
+	// Provide access to front-end for 'pause' variable
 	Q_PROPERTY(bool pause READ getPause WRITE setPause NOTIFY pauseChanged)
 
 	public:
+
 		GamePage(
 				const size_t& parseWidth = initialPageWidth,
 				QObject* parent = nullptr
 		);
-
-		struct Tile
-		{
-			size_t value{};
-
-			/*
-			Setting up a very RAW assign operator
-			when we are going to assign an integer (size_t but still integer)
-			to the Tile. So we are open Tile,
-			touch value and assign src to it.
-			Then we return reference to the Tile object
-			*/
-			Tile& operator= (const size_t& src)
-			{
-				this->value = src;
-				return *this;
-			}
-
-			// Setting up a method to compare and give result.
-			// Are Tile left operand and right value - equal?
-			bool operator== (const size_t& right_value) const
-			{
-				return right_value == this->value;
-			}
-			// Are Tile left operand and right_operand.value - equal?
-			bool operator== (const Tile& right_operand) const
-			{
-				return right_operand.value == this->value;
-			}
-		};
 
 		// Send to the front end game page width in tile units
 		size_t width() const;
@@ -68,15 +39,18 @@ class GamePage : public QAbstractListModel
 		// Send to the front end tile content that we don't want to show
 		size_t size() const;
 
-		//
+		// Write access to pause variable from front-end
 		void setPause(const bool& boolean){ pause = boolean; emit pauseChanged(); }
 
-		//
+		// Read access to pause variable from front-end
 		bool getPause(){ return pause; }
+
+		// Read access to status variable from front-end
+		bool getFinished() { return finished; }
 
 		// We could ignore move so return type is bool
 		// add Q_INVOKABLE to use method in the QML
-		Q_INVOKABLE /*bool*/void move(const int& index);
+		Q_INVOKABLE void move(const int& index);
 
 		// Invoke initializing the new game
 		Q_INVOKABLE void newPage();
@@ -87,15 +61,15 @@ class GamePage : public QAbstractListModel
 		// Invoke resizing tiles grid method
 		Q_INVOKABLE void resizeGrid(const int& width);
 
-		//
-		bool status;
+		// Win situation variable: true - it's a win, false - in the process
+		bool finished;
 
-		//
+		// Pause situation, when user can read info pages (about,...)
 		bool pause;
 
 	signals:
 
-		void statusChanged();
+		void finishedChanged();
 
 		void pauseChanged();
 
@@ -115,6 +89,13 @@ class GamePage : public QAbstractListModel
 
 		// Identify position on the game page (2D index) by some 1D index
 		identificator getTablePos(const size_t& index) const;
+
+		/*
+		We setting game page variables and containers multiple times
+		so to get rid of repetetive code we can provide a special
+		method to do this.
+		*/
+		void reusableConstructor(const int& parseWidth);
 
 		/*
 		We check tiles in the container, and if it's a win position
@@ -151,13 +132,13 @@ class GamePage : public QAbstractListModel
 		size_t m_size;
 
 		// Container with tiles content
-		std::vector<Tile> m_tiles;
+		std::vector<size_t> m_tiles;
 
 		// Container with initial tiles content after succesful shuffle
-		std::vector<Tile> tiles_saved;
+		std::vector<size_t> tiles_saved;
 
 		// Win position
-		std::vector<Tile> winner;
+		std::vector<size_t> tiles_win;
 };
 
 #endif // GAMEPAGE_H

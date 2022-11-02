@@ -10,13 +10,13 @@ Rectangle {
 	width: _parsedGamePage.width
 	height: _parsedGamePage.height
 
-	color: "black"
+	color: "gray"
 	opacity: 0.87
 
 	anchors.top: _parsedGamePage.top
 
 	Text {
-		id: _winText
+		id: _aboutText
 
 		color: "white"
 
@@ -57,13 +57,8 @@ Rectangle {
 		anchors.bottomMargin: 10
 		anchors.rightMargin: 10
 
-		onClicked: _closeAbout.proceedOk()
-		Keys.onReturnPressed: _closeAbout.proceedOk() // Enter key
-		Keys.onEnterPressed: _closeAbout.proceedOk() // Numpad enter key
-
-		function proceedOk() {
-			_parsedGamePage.model.pause = false;
-			_aboutNotice.visible = false;
-		}
+		onClicked: applicationW.proceedOk()
+		Keys.onReturnPressed: applicationW.proceedOk() // Enter key
+		Keys.onEnterPressed: applicationW.proceedOk() // Numpad enter key
 	}
 }

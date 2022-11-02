@@ -5,6 +5,11 @@ import QtQuick.Layouts 1.3
 //move this
 import QtQuick.Window 2.3
 
+/*
+Once C++ GamePage class type is registered,
+that type can be used in QML by importing the specified
+type namespace and version number:
+*/
 import BackEnd 1.0
 
 Window {
@@ -51,19 +56,41 @@ Window {
 		id: _parsedMenuBar
 	}
 
-	WinPage {
+	TwoButtonPage {
 		id: _parsedWinPage
 		visible: false
+		backColorValue: "black"
+		titleTextValue: "Congratulations!"
+		subtitleTextValue: "You have won...\nDo you want to start the new game?"
+		quitButtonVisible: true
 	}
 
-	AboutPage {
+	TwoButtonPage {
 		id: _parsedAboutPage
 		visible: false
+		backColorValue: "gray"
+		titleTextValue: "Production info"
+		// TODO: fix this
+		subtitleTextValue: "Game designed and produced by Dmytro Kovryzhenko,
+2 november 2022.\n\n\nAll rights reserved."
+		quitButtonVisible: false
 	}
 
 	Connections{
 		target: _parsedGamePage.model
-		function onStatusChanged() { _parsedWinPage.visible = true; }
+		function onFinishedChanged() { _parsedWinPage.visible = true; }
 	}
 
+	function proceedOk() {
+		if(_parsedGamePage.model.finished)
+		{
+			_parsedGamePage.model.newPage();
+			_parsedWinPage.visible = false;
+		}
+		else if(_parsedGamePage.model.pause)
+		{
+			_parsedGamePage.model.pause = false;
+			_parsedAboutPage.visible = false;
+		}
+	}
 }
