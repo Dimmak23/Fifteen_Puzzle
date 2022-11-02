@@ -50,6 +50,18 @@ Window {
 		// We need this properties to pass them to the SmartBar later
 		property real _parsedCellWidth: width / _parsedGamePage.model.width
 		property real _parsedCellHeight: height / _parsedGamePage.model.width
+
+		// We can change cells sizes by resizing utility
+		// BUT! Also we should allow to resize them when window is resized
+
+		// _parsedGamePage width changes so do cell width
+		onWidthChanged: {
+			_parsedCellWidth = width / _parsedGamePage.model.width;
+		}
+		// _parsedGamePage height changes so do cell height
+		onHeightChanged: {
+			_parsedCellHeight = height / _parsedGamePage.model.width;
+		}
 	}
 
 	SmartBar {

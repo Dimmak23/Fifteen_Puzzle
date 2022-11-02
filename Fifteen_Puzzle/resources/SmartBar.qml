@@ -56,11 +56,14 @@ MenuBar {
 			if(!_parsedGamePage.model.finished
 					&& !_parsedGamePage.model.pause)
 			{
+				// Give back and new page width in tiles units (3, 4 or 5)
 				_parsedGamePage.model.resizeGrid(value);
+				// Recalculate cell width
 				_parsedGamePage._parsedCellWidth =
-						_parsedGamePage.width / _parsedGamePage.model.width
+						_parsedGamePage.width / _parsedGamePage.model.width;
+				// Recalculate cell height
 				_parsedGamePage._parsedCellHeight =
-						_parsedGamePage.height / _parsedGamePage.model.width
+						_parsedGamePage.height / _parsedGamePage.model.width;
 			}
 		}
 

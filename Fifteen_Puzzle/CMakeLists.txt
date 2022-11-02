@@ -21,7 +21,7 @@ set(CMAKE_AUTORCC ON) #support *.qrc files
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(Qt6 6.2 COMPONENTS Quick Qml REQUIRED)
+find_package(Qt6 6.2 COMPONENTS Quick REQUIRED)
 
 #==========================INCLUSION OF PROJECT FIELS===========================
 
@@ -71,9 +71,9 @@ endif()
 
 
 qt_add_qml_module(appFifteen_Puzzle
-    URI Fifteen_Puzzle
-    VERSION 1.0
-    QML_FILES
+	URI Fifteen_Puzzle
+	VERSION 1.0
+	QML_FILES
 	resources/main.qml
 	resources/GamePage.qml
 	resources/Tile.qml
@@ -90,11 +90,11 @@ target_include_directories(
 )
 
 set_target_properties(appFifteen_Puzzle PROPERTIES
-    MACOSX_BUNDLE_GUI_IDENTIFIER my.example.com
-    MACOSX_BUNDLE_BUNDLE_VERSION ${PROJECT_VERSION}
+	MACOSX_BUNDLE_GUI_IDENTIFIER my.example.com
+	MACOSX_BUNDLE_BUNDLE_VERSION ${PROJECT_VERSION}
 	MACOSX_BUNDLE_SHORT_VERSION_STRING ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}
-    MACOSX_BUNDLE TRUE
-    WIN32_EXECUTABLE TRUE
+	MACOSX_BUNDLE TRUE
+	WIN32_EXECUTABLE TRUE
 )
 
 #===============================LINKING LIBRARIES===============================
@@ -103,12 +103,11 @@ set_target_properties(appFifteen_Puzzle PROPERTIES
 # Applies compiler and linker flags as specified by the linked-to libraries
 target_link_libraries(
 	appFifteen_Puzzle
-    PRIVATE
+	PRIVATE
 	Qt6::Quick
-	Qt6::Qml
 )
 
 install(TARGETS appFifteen_Puzzle
-    BUNDLE DESTINATION .
-    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+	BUNDLE DESTINATION .
+	LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
 )
