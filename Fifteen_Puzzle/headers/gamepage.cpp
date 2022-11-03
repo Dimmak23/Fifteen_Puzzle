@@ -194,6 +194,16 @@ bool GamePage::validatePosition(const size_t& pos) const
 }
 
 // Validation method for checking if we are generate the solvable shuffle
+/*
+In general, for a given grid of width N, we can find out check if a N*N ? 1 puzzle is solvable or not by following below simple rules :
+
+
+If N is odd, then puzzle instance is solvable if number of inversions is even in the input state.
+If N is even, puzzle instance is solvable if
+the blank is on an even row counting from the bottom (second-last, fourth-last, etc.) and number of inversions is odd.
+the blank is on an odd row counting from the bottom (last, third-last, fifth-last, etc.) and number of inversions is even.
+For all other cases, the puzzle instance is not solvable.
+*/
 bool GamePage::validateShuffle() const
 {
 	/*
@@ -205,11 +215,18 @@ bool GamePage::validateShuffle() const
 	int inverionsCount{};
 
 	// Count inversions
-	for(size_t res{}; res < m_size; res++)
+	//NOTE: m_size - 1, not m_size
+	for(size_t pos{}; pos < m_size - 1; pos++)
 	{
-		for(size_t before_res; before_res < res; before_res++)
+		for(size_t after_pos = pos + 1; after_pos < m_size; after_pos++)
 		{
-			if (m_tiles[before_res] > m_tiles[res])
+			if (
+				m_tiles[pos] != m_size          // it's shouldn't be hidden tile   // I'M NOT SURE HERE
+				&&
+				m_tiles[after_pos] != m_size    // it's shouldn't be hidden tile   // I'M NOT SURE HERE
+				&&
+				m_tiles[pos] > m_tiles[after_pos] // it's have to be moved
+				)
 				inverionsCount++;
 		}
 	}
@@ -221,7 +238,8 @@ bool GamePage::validateShuffle() const
 	*/
 	auto dummy = std::find(m_tiles.begin(), m_tiles.end(), m_size);
 
-	size_t indexer {};
+	// Calculate indexer from iterators for hidden tile
+	size_t hiddenIndex{};
 
 	/*
 	If somehow we didn't receive 16-tile in the container
@@ -230,25 +248,33 @@ bool GamePage::validateShuffle() const
 	if (dummy == m_tiles.end()) return false;
 	else
 	{
-		// We are starting with Tile numbered '1'
-		const size_t start_tile {1};
-
-		// Calculate indexer from iterators
-		indexer = dummy - m_tiles.begin();
-
-		/*
-		Add to the conversions count the number of
-		rows (plus one) that that empty space have to pass
-		to get to the position: '0' - left up corner
-		*/
-		inverionsCount += start_tile + indexer / m_width;
+		hiddenIndex = dummy - m_tiles.begin();
 	}
 
-	// If number of conversions are even this means that game is solvable
-	return (inverionsCount % 2) == 0;
+	// Find row index from the bottom
+	// indexing starts from '1'
+	size_t hiddenRowB = m_width - getTablePos(hiddenIndex).first;
+
+	// If it's odd width
+	// we give true if inversion count is even
+	if ((m_width % 2) != 0) return ((inverionsCount % 2) == 0);
+	// BUT! If width is even...
+	else
+	{
+		// If number of row of hidden tile from bottom is odd (1,3,5,...)
+		if ((hiddenRowB % 2) != 0)
+			// Inversions count should be even
+			return ((inverionsCount % 2) == 0);
+		// If number of row of hidden tile from bottom is even (2,4,6,...)
+		else
+			// Inversions count should be odd
+			return ((inverionsCount % 2) != 0);
+	}
 }
 
 // Identify position on the game page (2D index) by some 1D index
+// first: row
+// second: column
 identificator GamePage::getTablePos(const size_t& index) const
 {
 	identificator result {};
