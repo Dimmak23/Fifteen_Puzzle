@@ -84,7 +84,7 @@ Window {
 		titleTextValue: "Production info"
 		// TODO: fix this
 		subtitleTextValue: "Game designed and produced by Dmytro Kovryzhenko,
-2 november 2022.\n\n\nAll rights reserved."
+4 november 2022.\n\n\nAll rights reserved."
 		quitButtonVisible: false
 	}
 
@@ -101,8 +101,8 @@ Window {
 		}
 		else if(_parsedGamePage.model.pause)
 		{
-			_parsedGamePage.model.pause = false;
 			_parsedAboutPage.visible = false;
+			_parsedGamePage.model.pause = false;
 		}
 	}
 }

@@ -18,6 +18,9 @@ Unable to find the platform plugin.
 
 remove '--release' from command
 
+USE COMMAND:
+windeployqt.exe --dir [PATH_TO_DEPLOY] --compiler-runtime --qmldir [PATH_TO_QML] [TO_DEPLOY_EXE] 
+
 #2.
 Add <name>.exe to the [PATH_TO_DEPLOY]
 

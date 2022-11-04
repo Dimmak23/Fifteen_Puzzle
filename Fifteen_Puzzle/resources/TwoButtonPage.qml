@@ -37,26 +37,6 @@ Rectangle {
 		}
 	}
 
-	Button {
-		id: _okButton
-		text: "Ok"
-		flat: false
-		focus: true //focus on this button, need to be activated by 'Enter' key
-		highlighted: true //also highlight it, that user will know
-
-		width: Math.max(parent.width / 4, 5)
-		height: Math.max(parent.height / 16, 10)
-
-		anchors.right: parent.right
-		anchors.bottom: parent.bottom
-		anchors.bottomMargin: 10
-		anchors.rightMargin: 10
-
-		onClicked: applicationW.proceedOk()
-		Keys.onReturnPressed: applicationW.proceedOk() // Enter key
-		Keys.onEnterPressed: applicationW.proceedOk() // Numpad enter key
-	}
-
 	Text {
 		id: _subtitle
 		color: "white"
@@ -73,6 +53,34 @@ Rectangle {
 			// So we set the font size to the max between
 			// calculated value and '1' (the smallest acceptable value)
 			pointSize: Math.max(_parsedWinPage.width / 50, 1)
+		}
+	}
+
+	Button {
+		id: _okButton
+		text: "Ok"
+		flat: false
+		focus: true //focus on this button, need to be activated by 'Enter' key
+		highlighted: true //also highlight it, that user will know
+
+		width: Math.max(parent.width / 4, 5)
+		height: Math.max(parent.height / 16, 10)
+
+		anchors.right: parent.right
+		anchors.bottom: parent.bottom
+		anchors.bottomMargin: 10
+		anchors.rightMargin: 10
+
+		onClicked: {
+			applicationW.proceedOk();
+		}
+
+		// Handle Return and Enter keys (we will close win or about pages)
+		Keys.onReturnPressed: {
+			applicationW.proceedOk() // Enter key
+		}
+		Keys.onEnterPressed: {
+			applicationW.proceedOk() // Numpad enter key
 		}
 	}
 

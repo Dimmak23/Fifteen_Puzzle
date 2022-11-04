@@ -59,6 +59,7 @@ int main(int argc, char *argv[])
 		if (!obj && url == objUrl) QCoreApplication::exit(-1);
 	},
 	/*
+	Qt::QueuedConnection
 
 	Assuming game's thread is running an event loop,
 	emitting the signal (QQmlApplicationEngine::objectCreated)
@@ -80,6 +81,7 @@ int main(int argc, char *argv[])
 
 	*/
 	Qt::QueuedConnection
+//	Qt::DirectConnection
 	);
 
 	// pass url

@@ -193,15 +193,28 @@ bool GamePage::validatePosition(const size_t& pos) const
 	return pos < m_tiles.size();
 }
 
-// Validation method for checking if we are generate the solvable shuffle
 /*
-In general, for a given grid of width N, we can find out check if a N*N ? 1 puzzle is solvable or not by following below simple rules :
+   FROM TEST TASK:
+   ==> OPTIONAL:
+   Ensure that generated start positions are solvable
+   (half of all randomly generated positions is impossible to solve)
+*/
+// This method validate if we are generate the solvable shuffle
+/*
+In general, for a given grid of width N, we can find out check if a N*N puzzle
+is solvable or not by following below simple rules:
 
+1) If N is odd, then puzzle instance is solvable if number of inversions
+is even in the input state.
 
-If N is odd, then puzzle instance is solvable if number of inversions is even in the input state.
-If N is even, puzzle instance is solvable if
-the blank is on an even row counting from the bottom (second-last, fourth-last, etc.) and number of inversions is odd.
-the blank is on an odd row counting from the bottom (last, third-last, fifth-last, etc.) and number of inversions is even.
+2) If N is even puzzle instance is solvable if:
+
+	- the blank is on an even row counting from the bottom
+	(second-last, fourth-last, etc.) and number of inversions is odd.
+
+	- the blank is on an odd row counting from the bottom
+	(last, third-last, fifth-last, etc.) and number of inversions is even.
+
 For all other cases, the puzzle instance is not solvable.
 */
 bool GamePage::validateShuffle() const
@@ -216,14 +229,16 @@ bool GamePage::validateShuffle() const
 
 	// Count inversions
 	//NOTE: m_size - 1, not m_size
+	// take tile in the array
 	for(size_t pos{}; pos < m_size - 1; pos++)
 	{
+		// analize all tiles after tooked tile
 		for(size_t after_pos = pos + 1; after_pos < m_size; after_pos++)
 		{
 			if (
-				m_tiles[pos] != m_size          // it's shouldn't be hidden tile   // I'M NOT SURE HERE
+				m_tiles[pos] != m_size          // it's shouldn't be hidden tile
 				&&
-				m_tiles[after_pos] != m_size    // it's shouldn't be hidden tile   // I'M NOT SURE HERE
+				m_tiles[after_pos] != m_size    // it's shouldn't be hidden tile
 				&&
 				m_tiles[pos] > m_tiles[after_pos] // it's have to be moved
 				)
@@ -231,32 +246,23 @@ bool GamePage::validateShuffle() const
 		}
 	}
 
-	/*
-	We need to traverse m_tiles
-	to find 16-tile and add appropriate
-	coefficient to the conversions count
-	*/
+	// We need to traverse m_tiles to find 16-tile.
 	auto dummy = std::find(m_tiles.begin(), m_tiles.end(), m_size);
 
 	// Calculate indexer from iterators for hidden tile
 	size_t hiddenIndex{};
 
-	/*
-	If somehow we didn't receive 16-tile in the container
-	we will return false
-	*/
+	//If somehow we didn't receive 16-tile in the container we will return false
 	if (dummy == m_tiles.end()) return false;
 	else
 	{
 		hiddenIndex = dummy - m_tiles.begin();
 	}
 
-	// Find row index from the bottom
-	// indexing starts from '1'
+	// Find row index from the bottom, indexing starts from '1'
 	size_t hiddenRowB = m_width - getTablePos(hiddenIndex).first;
 
-	// If it's odd width
-	// we give true if inversion count is even
+	// If width is odd we say that shuffle is VALID if inversion count is even
 	if ((m_width % 2) != 0) return ((inverionsCount % 2) == 0);
 	// BUT! If width is even...
 	else
@@ -272,16 +278,17 @@ bool GamePage::validateShuffle() const
 	}
 }
 
-// Identify position on the game page (2D index) by some 1D index
-// first: row
-// second: column
+/*
+Identify position on the game page (2D index) by some 1D index
+	first: row number
+	second: column number
+indexing starts from '1'
+*/
 identificator GamePage::getTablePos(const size_t& index) const
 {
 	identificator result {};
-
 	result.first = index / m_width;
 	result.second = index % m_width;
-
 	return result;
 }
 
