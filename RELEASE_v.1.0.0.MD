@@ -52,7 +52,6 @@ CMake was used as project assembler._</font>
 
 ![plot](./Fifteen_Puzzle/readme_pics/game_ribbon.png)
 
-
 <font size="4">**5. Settings options.**</font>
 
 <font size="3">Take a moment to appreciate a resizing ability. Such ability we use to implement difficulty level:
