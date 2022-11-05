@@ -74,7 +74,7 @@ Window {
 		backColorValue: "black"
 		titleTextValue: "Congratulations!"
 		subtitleTextValue: "You have won...\nDo you want to start the new game?"
-		okButtonText: "New..."
+		okButtonText: "Ok"
 		quitButtonVisible: true
 	}
 
