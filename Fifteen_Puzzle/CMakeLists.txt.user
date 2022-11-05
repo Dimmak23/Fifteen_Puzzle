@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
-<!-- Written by QtCreator 8.0.1, 2022-11-04T11:15:19. -->
+<!-- Written by QtCreator 8.0.1, 2022-11-05T20:25:24. -->
 <qtcreator>
  <data>
   <variable>EnvironmentId</variable>
@@ -92,7 +92,7 @@
    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName">Desktop Qt 6.3.1 UCRT_GCC_12.2.0 64-bit</value>
    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">Desktop Qt 6.3.1 UCRT_GCC_12.2.0 64-bit</value>
    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">{00a9a0ea-ed4f-4193-907a-9115163cdc02}</value>
-   <value type="qlonglong" key="ProjectExplorer.Target.ActiveBuildConfiguration">1</value>
+   <value type="qlonglong" key="ProjectExplorer.Target.ActiveBuildConfiguration">0</value>
    <value type="qlonglong" key="ProjectExplorer.Target.ActiveDeployConfiguration">0</value>
    <value type="qlonglong" key="ProjectExplorer.Target.ActiveRunConfiguration">0</value>
    <valuemap type="QVariantMap" key="ProjectExplorer.Target.BuildConfiguration.0">
@@ -355,7 +355,7 @@
     <value type="bool" key="RunConfiguration.UseLibrarySearchPath">true</value>
     <value type="bool" key="RunConfiguration.UseQmlDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseQmlDebuggerAuto">true</value>
-    <value type="QString" key="RunConfiguration.WorkingDirectory.default">D:/CPP/QML_projects/Bergx2_GmbH_TT/Build/Desktop_Qt_6_3_1_UCRT_GCC_12_2_0_64_bit/Release</value>
+    <value type="QString" key="RunConfiguration.WorkingDirectory.default">D:/CPP/QML_projects/Bergx2_GmbH_TT/Build/Desktop_Qt_6_3_1_UCRT_GCC_12_2_0_64_bit/Debug</value>
    </valuemap>
    <value type="qlonglong" key="ProjectExplorer.Target.RunConfigurationCount">1</value>
   </valuemap>
