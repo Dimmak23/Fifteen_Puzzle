@@ -81,6 +81,7 @@ Window {
 		backColorValue: "black"
 		titleTextValue: "Congratulations!"
 		subtitleTextValue: "You have won...\nDo you want to start the new game?"
+		okButtonText: "Ok"
 		quitButtonVisible: true
 	}
 
@@ -92,6 +93,7 @@ Window {
 		// TODO: fix this
 		subtitleTextValue: "Game designed and produced by Dmytro Kovryzhenko,
 4 november 2022.\n\n\nAll rights reserved."
+		okButtonText: "Ok"
 		quitButtonVisible: false
 	}
 

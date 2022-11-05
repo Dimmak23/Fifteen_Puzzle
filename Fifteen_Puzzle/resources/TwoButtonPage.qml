@@ -7,6 +7,7 @@ Rectangle {
 	property string backColorValue: ""
 	property string titleTextValue: ""
 	property string subtitleTextValue: ""
+	property string okButtonText: ""
 	property bool quitButtonVisible: false
 
 	color: backColorValue
@@ -58,7 +59,7 @@ Rectangle {
 
 	Button {
 		id: _okButton
-		text: "Ok"
+		text: okButtonText
 		flat: false
 		focus: true //focus on this button, need to be activated by 'Enter' key
 		highlighted: true //also highlight it, that user will know
