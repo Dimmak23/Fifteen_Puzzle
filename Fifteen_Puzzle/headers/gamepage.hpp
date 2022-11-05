@@ -61,6 +61,9 @@ class GamePage : public QAbstractListModel
 		// Invoke resizing tiles grid method
 		Q_INVOKABLE void resizeGrid(const int& width);
 
+		//
+		Q_INVOKABLE bool validateDrag(const int& index);
+
 		// Win situation variable: true - it's a win, false - in the process
 		bool finished;
 

@@ -31,8 +31,12 @@ Window {
 		z: applicationW.z - 1
 		width: applicationW.width
 		height: applicationW.height
-		smooth: true //
+		smooth: true //?
 	}
+
+	property int fromIndex: -1 // origin point
+	// Not used
+	property int toIndex: -1 // destination point
 
 	GamePage {
 		id: _parsedGamePage
@@ -63,6 +67,9 @@ Window {
 			_parsedCellHeight = height / _parsedGamePage.model.width;
 		}
 	}
+
+	property bool clickingTiles: false
+	property bool draggingTiles: true
 
 	SmartBar {
 		id: _parsedMenuBar

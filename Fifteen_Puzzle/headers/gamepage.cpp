@@ -79,6 +79,7 @@ void GamePage::move(const int& index)
 	// Initialize changing the model
 	beginResetModel();
 
+	// Maybe it's an invalid position
 	if(!validatePosition(static_cast<size_t>(index))) return;
 
 	// Identify 2D position of the pressed tile
@@ -159,6 +160,37 @@ void GamePage::resizeGrid(const int& width)
 	// Invoke re-constructor for the game
 	reusableConstructor(width);
 	endResetModel();
+}
+
+// Let's validate user attempt to drag tiles
+bool GamePage::validateDrag(const int& index)
+{
+	// Make sure that game isn't ended up
+	if(finished || pause) return false;
+
+	// Maybe it's an invalid position
+	if(!validatePosition(static_cast<size_t>(index))) return false;
+
+	// Identify 2D position of the pressed tile
+	const identificator draggedTile {getTablePos(index)};
+
+	// Get iterator to the hidden tile
+	auto hiddenTileIterator = std::find(m_tiles.begin(), m_tiles.end(), m_size);
+
+	// Make sure that we get hidden tile
+	Q_ASSERT(hiddenTileIterator != m_tiles.end());
+
+	// Identify 2D position of the hidden tile
+	identificator hiddenTile {
+		getTablePos(
+					std::distance(m_tiles.begin(), hiddenTileIterator)
+					)
+	};
+
+	// We can't drag given tile
+	if (!Utility::movableCells(draggedTile, hiddenTile)) return false;
+	// or we can draging it
+	else return true;
 }
 
 // Shuffle the tiles with Mersenne Twister random generator

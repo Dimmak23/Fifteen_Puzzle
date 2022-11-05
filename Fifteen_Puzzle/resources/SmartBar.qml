@@ -68,6 +68,7 @@ MenuBar {
 		}
 
 		Menu {
+			id: _levels
 			title: "Edit difficulty level"
 
 			/*
@@ -91,6 +92,41 @@ MenuBar {
 				text: qsTr("&Hard - 5x5 (Ctrl+H)")
 				shortcut: "Ctrl+H"
 				onTriggered: { _settings.resizeTiles(5); }
+			}
+		}
+		Menu {
+			id: _visual
+			title: "Edit visualization"
+
+			/*
+			Let's play with moving methods
+			*/
+			Action {
+				id: _clicker
+				text: qsTr("Move by &clicking (Ctrl+C)")
+				shortcut: "Ctrl+C"
+				checkable: true
+				checked: clickingTiles
+				onTriggered: {
+					clickingTiles = true; draggingTiles = false;
+					_visual.checker();
+				}
+			}
+			Action {
+				id: _dragger
+				text: qsTr("&Drag and drop (Ctrl+D)")
+				shortcut: "Ctrl+D"
+				checkable: true
+				checked: draggingTiles
+				onTriggered: {
+					clickingTiles = false; draggingTiles = true;
+					_visual.checker();
+				}
+			}
+			function checker()
+			{
+				_dragger.checked = draggingTiles;
+				_clicker.checked = clickingTiles;
 			}
 		}
 	}
